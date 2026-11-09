@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import styles from "./SendInput.module.css"
+import fonts from "./Fonts.module.css"
 
 export default function SendInput({ onSend, placeholder = "Type here...", disabled = false }) {
   const [text, setText] = useState("");
@@ -14,7 +15,7 @@ export default function SendInput({ onSend, placeholder = "Type here...", disabl
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={`${styles.form} ${fonts.dmSans300}`} onSubmit={handleSubmit}>
       <input
         className={styles.input}
         type="text"
