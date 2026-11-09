@@ -1,0 +1,12 @@
+$kind: collection
+name: Quax Snippets API
+description: 'Tests for /api/snippets/[id] (GET, PATCH, DELETE). Run against `next dev`. Non-destructive: the delete flow creates its own snippet first, so seed rows are never removed and it can be re-run.'
+variables:
+  - key: base_url
+    value: 'http://localhost:3000'
+  - key: snippet_id
+    value: '3'
+  - key: original_title
+    value: ''
+  - key: created_id
+    value: ''

@@ -1,0 +1,9 @@
+$kind: http-request
+method: GET
+url: '{{base_url}}/api/snippets/{{created_id}}'
+order: 18000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('404 after delete', () => pm.response.to.have.status(404));

@@ -1,0 +1,46 @@
+{
+  "snippets": [
+    {
+      "id": "1",
+      "title": "First item",
+      "language": "cpp",
+      "tags": ["tag-a", "tag-b"],
+      "code": "#include <iostream>"
+    },
+    {
+      "id": "2",
+      "title": "Second item",
+      "language": "py",
+      "tags": ["tag-a", "tag-b"],
+      "code": "print \"Hello World!\""
+    },
+    {
+      "id": "3",
+      "title": "Second item",
+      "language": "py",
+      "tags": ["tag-a", "tag-b"],
+      "code": "print \"Hello World!\""
+    },
+    {
+      "id": "4",
+      "title": "Second item",
+      "language": "py",
+      "tags": ["tag-a", "tag-b"],
+      "code": "print \"Hello World!\""
+    },
+    {
+      "id": "5",
+      "title": "Second item",
+      "language": "py",
+      "tags": ["tag-a", "tag-b"],
+      "code": "print \"Hello World!\""
+    },
+    {
+      "id": "6",
+      "title": "Second item",
+      "language": "py",
+      "tags": ["tag-a", "tag-b"],
+      "code": "print \"Hello World!\""
+    }
+  ]
+}

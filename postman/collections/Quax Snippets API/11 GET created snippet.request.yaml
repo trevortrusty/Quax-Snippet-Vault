@@ -1,0 +1,14 @@
+$kind: http-request
+method: GET
+url: '{{base_url}}/api/snippets/{{created_id}}'
+order: 11000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const body = pm.response.json();
+      pm.test('200 OK', () => pm.response.to.have.status(200));
+      pm.test('created snippet persisted', () => {
+        pm.expect(body.id).to.eql(pm.collectionVariables.get('created_id'));
+        pm.expect(body.tags).to.have.lengthOf(3);
+      });

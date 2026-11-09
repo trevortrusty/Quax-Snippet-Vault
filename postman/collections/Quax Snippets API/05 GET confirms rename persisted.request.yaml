@@ -1,0 +1,10 @@
+$kind: http-request
+method: GET
+url: '{{base_url}}/api/snippets/{{snippet_id}}'
+order: 5000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('200 OK', () => pm.response.to.have.status(200));
+      pm.test('rename is stored', () => pm.expect(pm.response.json().title).to.eql('Renamed by Postman'));

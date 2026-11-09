@@ -1,0 +1,46 @@
+
+.shell {
+  display: flex;
+  height: 100dvh;
+  background: #000E1F;
+}
+
+.sidebar {
+  width: 370px;
+  flex-shrink: 0;
+  padding: 16px;
+  color: #fff;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid rgba(128, 128, 128, 0.3);
+  height: 100vh;
+}
+
+.ChatSection {
+    margin-top: auto;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.navbar {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}

@@ -1,0 +1,30 @@
+$kind: http-request
+method: POST
+url: '{{base_url}}/api/snippets'
+order: 10000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "title": "React functional component",
+      "language": "jsx",
+      "tags": ["react", "component", "boilerplate"],
+      "code": "export default function ComponentName({ children }) {\n  return (\n    <div>\n      {children}\n    </div>\n  );\n}\n"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const body = pm.response.json();
+      pm.test('201 Created', () => pm.response.to.have.status(201));
+      pm.test('server generated a string id', () => pm.expect(body.id).to.be.a('string').and.not.empty);
+      pm.test('fields echoed back', () => {
+        pm.expect(body.title).to.eql('React functional component');
+        pm.expect(body.language).to.eql('jsx');
+        pm.expect(body.code).to.include('export default function ComponentName');
+      });
+      pm.test('all tags kept (no tag limit)', () => pm.expect(body.tags).to.eql(['react', 'component', 'boilerplate']));
+      pm.collectionVariables.set('created_id', body.id);

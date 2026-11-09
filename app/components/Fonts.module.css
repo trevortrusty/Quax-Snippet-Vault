@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Libre+Barcode+39&family=Libre+Barcode+EAN13+Text&family=Outfit:wght@100..900&display=swap');
+
+.dmSans800 {
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.dmSans300 {
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.textSize18 {
+    font-size: 18px;
+}
+
+.textSize14 {
+    font-size: 14px;
+}
+
+.whiteText {
+    color: white;
+}
+
+.grayText {
+    color: gray;
+}

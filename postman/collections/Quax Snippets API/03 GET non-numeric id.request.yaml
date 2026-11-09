@@ -1,0 +1,9 @@
+$kind: http-request
+method: GET
+url: '{{base_url}}/api/snippets/abc'
+order: 3000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('404 Not Found (not a 500)', () => pm.response.to.have.status(404));

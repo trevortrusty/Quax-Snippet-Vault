@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "next start -H 127.0.0.1",
+    "lint": "eslint",
+    "db:seed": "node scripts/db.mjs seed",
+    "db:reset": "node scripts/db.mjs reset"
   },
   "dependencies": {
     "next": "16.4.5",
-    "react": "19.3.0",
+    "react": "^19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {

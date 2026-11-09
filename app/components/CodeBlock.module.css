@@ -1,0 +1,13 @@
+.pre {
+  margin: 16px 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #000015;
+  color: #e6edf3;
+  font-size: 13px;
+  line-height: 1.5;
+  font-family: ui-monospace, monospace;
+  overflow-x: auto;
+  overflow-y: scroll;
+  height: 300px;
+}

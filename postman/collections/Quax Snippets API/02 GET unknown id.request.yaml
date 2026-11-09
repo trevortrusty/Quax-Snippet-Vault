@@ -1,0 +1,10 @@
+$kind: http-request
+method: GET
+url: '{{base_url}}/api/snippets/999999'
+order: 2000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('404 Not Found', () => pm.response.to.have.status(404));
+      pm.test('error body', () => pm.expect(pm.response.json()).to.eql({ error: 'Not found' }));

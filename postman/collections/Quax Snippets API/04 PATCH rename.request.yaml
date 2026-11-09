@@ -1,0 +1,17 @@
+$kind: http-request
+method: PATCH
+url: '{{base_url}}/api/snippets/{{snippet_id}}'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"title": "  Renamed by Postman  "}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('200 OK', () => pm.response.to.have.status(200));
+      pm.test('title updated and trimmed', () => pm.expect(pm.response.json().title).to.eql('Renamed by Postman'));

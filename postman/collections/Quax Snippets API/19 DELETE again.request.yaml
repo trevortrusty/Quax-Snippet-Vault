@@ -1,0 +1,9 @@
+$kind: http-request
+method: DELETE
+url: '{{base_url}}/api/snippets/{{created_id}}'
+order: 19000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test('404 on repeat delete', () => pm.response.to.have.status(404));

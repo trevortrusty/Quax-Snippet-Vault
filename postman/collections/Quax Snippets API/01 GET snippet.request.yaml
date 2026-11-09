@@ -1,0 +1,17 @@
+$kind: http-request
+method: GET
+url: '{{base_url}}/api/snippets/{{snippet_id}}'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const body = pm.response.json();
+      pm.test('200 OK', () => pm.response.to.have.status(200));
+      pm.test('JSON content type', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));
+      pm.test('id matches request', () => pm.expect(body.id).to.eql(pm.collectionVariables.get('snippet_id')));
+      pm.test('has expected fields', () => {
+        pm.expect(body).to.have.all.keys('id', 'title', 'language', 'tags', 'code');
+        pm.expect(body.tags).to.be.an('array');
+      });
+      pm.collectionVariables.set('original_title', body.title);
