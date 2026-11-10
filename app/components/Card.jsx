@@ -5,7 +5,7 @@ import fonts from "./Fonts.module.css"
 import { Trash2 } from "lucide-react";
 import { useSnippets } from "./SnippetsContext";
 
-export default function Card({ id, title, body, tags = [] }) {
+export default function Card({ id, title, body, language, tags = [] }) {
   const [tagA, tagB] = tags; // expects 2 tags
   const { deleteSnippet } = useSnippets();
 
@@ -18,8 +18,7 @@ export default function Card({ id, title, body, tags = [] }) {
       <div className={ styles.cardHeader }>
         <h3 className={`${fonts.dmSans800} ${fonts.textSize18} ${fonts.whiteText} ${styles.title}`}>{title}</h3>
         <div className={`${fonts.dmSans300} ${fonts.textSize14} ${fonts.grayText} ${styles.tags}`}>
-          {tagA && <span className={styles.tag}>{tagA}</span>}
-          {tagB && <span className={styles.tag}>{tagB}</span>}
+          {tagA && <span className={styles.tag}>{language}</span>}
         </div>
       </div>
       <CodeBlock code={body} />
