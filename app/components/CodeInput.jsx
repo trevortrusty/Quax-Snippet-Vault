@@ -25,12 +25,6 @@ export default function CodeInput({ onSend, placeholder = "Type here...", disabl
     await onSend?.(ret);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-    }
-  };
-
   return (
     <form className={`${styles.form} ${fonts.dmSans300}`} onSubmit={handleSubmit}>
       <input
@@ -57,10 +51,8 @@ export default function CodeInput({ onSend, placeholder = "Type here...", disabl
         className={styles.textarea}
         value={code}
         onChange={(event) => setCode(event.target.value)}
-        onKeyDown={handleKeyDown}
         placeholder={"Type your code here"}
         rows={10}
-        maxLength={100}       // the browser stops typing at this limit
       />
       <button className={styles.button} type="submit" disabled={disabled}>
         Send
