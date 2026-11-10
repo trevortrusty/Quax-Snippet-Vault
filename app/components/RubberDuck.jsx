@@ -1,6 +1,6 @@
 "use client"
 
-// This duck character was fully generated for me by Claude (LLM agent).
+// This duck character was fully generated for me by Claude (LLM agent) using Randis UDS (see Attribution below).
 // I have no idea how to make a 3D duck of this calibre, or what any of this code is doing
 // It seems to be nesting C++ code in order to make the stuff happen.
 //

@@ -1,21 +1,12 @@
 "use client"
 
 import Card from "./components/Card"
-import styles from "./components/page.module.css"
-import { useState, useEffect } from 'react';
+import styles from "./page.module.css"
+import { useSnippets } from "./components/SnippetsContext";
 
+// The list itself is loaded and kept up to date by <SnippetsProvider>.
 export default function Home() {
-  const [snippets, setSnippets] = useState([]);
-  const [refetch, setRefetch] = useState(false);
-
-
-  useEffect(() => {
-    fetch("/api/snippets")
-      .then((data) => data.json())
-      .then((data) => {
-        setSnippets(data);
-      });
-  }, [refetch]);
+  const { snippets } = useSnippets();
 
   return (
     <div className={styles.cards}>
