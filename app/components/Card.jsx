@@ -2,9 +2,15 @@ import React from "react";
 import styles from "./Card.module.css";
 import CodeBlock from "./CodeBlock"
 import fonts from "./Fonts.module.css"
+import { useSnippets } from "./SnippetsContext";
 
-export default function Card({ title, body, tags = [] }) {
+export default function Card({ id, title, body, tags = [] }) {
   const [tagA, tagB] = tags; // expects 2 tags
+  const { deleteSnippet } = useSnippets();
+
+  const handleSnippetDeletion = async (id) => {
+    await deleteSnippet(id);
+  }
 
   return (
     <div className={styles.card}>
@@ -17,7 +23,7 @@ export default function Card({ title, body, tags = [] }) {
       </div>
       <CodeBlock code={body} />
       {/* <p className={styles.body}>{body}</p>*/}
-
+      <button onClick={() => handleSnippetDeletion(id)}>×</button>
     </div>
   );
 }

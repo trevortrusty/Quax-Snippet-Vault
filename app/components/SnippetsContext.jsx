@@ -41,9 +41,27 @@ export function SnippetsProvider({ children }) {
     return created;
   }, []);
 
+  // Resolves with the created snippet; throws if the server rejects it.
+  const deleteSnippet = useCallback(async (id) => {
+    try {
+      const res = await fetch(`/api/snippets/${id}`, { method: "DELETE" });
+
+      // fetch doesn't throw on 404/500, so check res.ok yourself
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);   // error body may be empty
+        throw new Error(data?.error || `Delete failed (${res.status})`);
+      }
+      // A successful DELETE often returns 204 (no body), so don't call res.json() on success.
+
+      setSnippets((prev) => prev.filter((item) => item.id !== id));   // remove it from the screen
+    } catch (err) {
+      console.error(err);   // or show the message in the UI
+    }
+  }, []);
+
   const value = useMemo(
-    () => ({ snippets, modalOpen, openModal, closeModal, addSnippet }),
-    [snippets, modalOpen, openModal, closeModal, addSnippet]
+    () => ({ snippets, modalOpen, openModal, closeModal, addSnippet, deleteSnippet }),
+    [snippets, modalOpen, openModal, closeModal, addSnippet, deleteSnippet]
   );
 
   return <SnippetsContext.Provider value={value}>{children}</SnippetsContext.Provider>;

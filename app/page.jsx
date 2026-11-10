@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className={styles.cards}>
       {snippets.map((snippet) => (
-        <Card key={snippet.id}  title={snippet.title} body={snippet.code} tags={snippet.tags} />
+        <Card key={snippet.id} id={ snippet.id } title={snippet.title} body={snippet.code} tags={snippet.tags}/>
       ))}
     </div>
   );
