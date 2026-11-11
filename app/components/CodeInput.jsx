@@ -41,8 +41,8 @@ export default function CodeInput({ onSend, placeholder = "Type here...", disabl
         type="text"
         value={lang}
         onChange={(event) => setLang(event.target.value)}
-        placeholder={"Language"}
-        aria-label={"Language"}
+        placeholder={"Languages"}
+        aria-label={"Languages"}
         disabled={disabled}
       />
       <textarea
