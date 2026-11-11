@@ -1,4 +1,4 @@
-# Quax
+# Quax 🦆
 ## Hi! I'm Quax, and I'm here to help you with your coding project without getting trapped in the "vibe-coding" hype.
 
 Think back to before the future hit us like a quack-ton of bricks... When you needed boilerplate code to get started on a feature you were developing, you'd have turned to resources like w3schools or HowToGeek. Only after googling, scrolling and trying different links would we find relevant snippets of code that we could copy into our project and build off of.
