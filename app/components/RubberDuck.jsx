@@ -21,6 +21,7 @@ const DUCK_FRAG = `
 precision highp float;
 uniform vec2 uRes; uniform float uU; uniform mat3 uR; uniform mat3 uRi; uniform vec3 uT; uniform float uSh;
 uniform vec3 uBU; uniform vec3 uBL; uniform float uBeak;
+uniform float uSq;        // how squeezed he is right now (0 = normal), used for the quack squeeze
 const float F = 7.0;
 
 float sdE(vec3 p, vec3 r){ float k0 = length(p / r); float k1 = length(p / (r * r)); return k0 * (k0 - 1.0) / max(k1, 0.00001); }
@@ -30,6 +31,8 @@ vec2 opU(vec2 a, vec2 b){ return a.x < b.x ? a : b; }
 
 // material ids: 0 yellow, 1 beak orange, 2 eye white, 3 pupil, 6 wing yellow, 7 sparkle, 8 mouth
 vec2 map(vec3 p){
+  // squeeze: a little shorter and wider, pressed down toward the floor
+  p = vec3(p.x / (1.0 + 0.05 * uSq), (p.y + 1.0) / (1.0 - 0.07 * uSq) - 1.0, p.z / (1.0 + 0.05 * uSq));
   vec3 q = vec3(p.x, p.y, abs(p.z));
   float body = sdE(p - vec3(0.0, -0.5, 0.0), vec3(1.05, 0.72, 0.8));
   float head = sdE(p - vec3(0.58, 0.5, 0.0), vec3(0.56, 0.56, 0.54));
@@ -166,7 +169,7 @@ export default function RubberDuck({ height = 175, maxWidth = 320, quackRef }) {
           gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
           gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
           gl.useProgram(prog); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-          u = {}; ["uRes", "uU", "uR", "uRi", "uT", "uSh", "uBU", "uBL", "uBeak"].forEach(n => { u[n] = gl.getUniformLocation(prog, n); });
+          u = {}; ["uRes", "uU", "uR", "uRi", "uT", "uSh", "uBU", "uBL", "uBeak", "uSq"].forEach(n => { u[n] = gl.getUniformLocation(prog, n); });
         }
       }
     }
@@ -201,7 +204,7 @@ export default function RubberDuck({ height = 175, maxWidth = 320, quackRef }) {
       const aU = .16 * b, aL = -.55 * b, hx = .95, hy = .34;
       const hinged = (cx0, cy0, a) => { const dx = cx0 - hx, dy = cy0 - hy; return [hx + dx * Math.cos(a) - dy * Math.sin(a), hy + dx * Math.sin(a) + dy * Math.cos(a), a]; };
       const bu = hinged(1.2, .4, aU), bl = hinged(1.15, .29, aL);
-      gl.uniform3f(u.uBU, bu[0], bu[1], bu[2]); gl.uniform3f(u.uBL, bl[0], bl[1], bl[2]); gl.uniform1f(u.uBeak, b);
+      gl.uniform3f(u.uBU, bu[0], bu[1], bu[2]); gl.uniform3f(u.uBL, bl[0], bl[1], bl[2]); gl.uniform1f(u.uBeak, b); gl.uniform1f(u.uSq, b);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 
@@ -285,9 +288,9 @@ export default function RubberDuck({ height = 175, maxWidth = 320, quackRef }) {
     const tone = (a, type, f0, f1, t, dur) => {
       const o = a.createOscillator(); o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur); return o;
     };
-    // Buzzy voice through two nasal resonances; sometimes a double "quack-quack". Opens the beak.
+    // Buzzy voice through two nasal resonances; one quack per call. Opens the beak.
     function quack() {
-      const a = bus(), count = Math.random() < .35 ? 2 : 1, pitchK = .92 + Math.random() * .16, now = performance.now();
+      const a = bus(), count = 1, pitchK = .92 + Math.random() * .16, now = performance.now();
       setAwake(true);
       for (let k = 0; k < count; k++) {
         const t = a.currentTime + .01 + k * .2, dur = .17, f0 = 640 * pitchK * (k ? .93 : 1), f1 = 250 * pitchK;
