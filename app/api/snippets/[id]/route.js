@@ -13,14 +13,16 @@ export async function GET(request, { params }) {
   return Response.json(snippet);
 }
 
-// PATCH /api/snippets/[id]  body: { "title": "Renamed" }
+// PATCH /api/snippets/[id]  body: any of { "title", "language", "code" }; blank values are ignored
 export async function PATCH(request, { params }) {
   const { id } = await params;
   const db = getDb();
   if (!findSnippet(db, id)) return Response.json({ error: "Not found" }, { status: 404 });
   const body = await request.json().catch(() => ({}));
-  if (typeof body?.title === "string" && body.title.trim()) {
-    db.prepare("UPDATE snippets SET title = ? WHERE id = ?").run(body.title.trim(), id);
+  for (const field of ["title", "language", "code"]) { // fixed list, so the column name is safe to interpolate
+    if (typeof body?.[field] === "string" && body[field].trim()) {
+      db.prepare(`UPDATE snippets SET ${field} = ? WHERE id = ?`).run(body[field].trim(), id);
+    }
   }
   return Response.json(findSnippet(db, id));
 }

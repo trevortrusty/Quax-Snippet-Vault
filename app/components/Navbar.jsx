@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <header className={styles.navbar}>
       <span className={`${fonts.dmSans800} ${fonts.textSize18} ${fonts.whiteText}`}>Snippet Vault</span>
-      <button type="button" className={styles.button} onClick={openModal}>
+      <button type="button" className={styles.button} onClick={() => openModal()}>
         <Plus size={25} className={styles.AddButton}/>
       </button>
     </header>

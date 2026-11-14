@@ -2,12 +2,11 @@ import React from "react";
 import styles from "./Card.module.css";
 import CodeBlock from "./CodeBlock"
 import fonts from "./Fonts.module.css"
-import { Trash2 } from "lucide-react";
+import { Trash2 , SquarePen } from "lucide-react";
 import { useSnippets } from "./SnippetsContext";
 
-export default function Card({ id, title, body, language, tags = [] }) {
-  const [tagA, tagB] = tags; // expects 2 tags
-  const { deleteSnippet } = useSnippets();
+export default function Card({ id, title, body, language}) {
+  const { deleteSnippet, openModal } = useSnippets();
 
   const handleSnippetDeletion = async (id) => {
     await deleteSnippet(id);
@@ -23,7 +22,8 @@ export default function Card({ id, title, body, language, tags = [] }) {
       </div>
       <CodeBlock code={body} />
       {/* <p className={styles.body}>{body}</p>*/}
-      <button className={styles.DeleteButton } onClick={() => handleSnippetDeletion(id)}><Trash2 size={16} /></button>
+      <button className={styles.ModButton} onClick={() => handleSnippetDeletion(id)}><Trash2 size={16} /></button>
+      <button className={styles.ModButton} onClick={() => openModal({ id, title, language, code: body })} aria-label="Edit snippet"><SquarePen size={16} /></button>
     </div>
   );
 }

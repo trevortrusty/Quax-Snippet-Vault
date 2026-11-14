@@ -3,9 +3,11 @@
 //   <SnippetsProvider> wraps the app once (see App.jsx).
 //   useSnippets() gives any component below it:
 //     snippets                the cards to show
-//     modalOpen               is the Add Snippet modal showing?
-//     openModal/closeModal    show / hide the modal
+//     modalOpen               is the snippet modal showing?
+//     modalSnippet            the snippet being edited, or null when the modal is creating a new one
+//     openModal(snippet?)     show the modal (pass a snippet to edit it) / closeModal hides it
 //     addSnippet(data)        POST a new snippet, then add it to `snippets` (no reload needed)
+//     editSnippet(id, data)   PATCH a snippet, then swap the updated one into `snippets`
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const SnippetsContext = createContext(null);
@@ -13,6 +15,7 @@ const SnippetsContext = createContext(null);
 export function SnippetsProvider({ children }) {
   const [snippets, setSnippets] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalSnippet, setModalSnippet] = useState(null);
 
   // Load the list once on mount.
   useEffect(() => {
@@ -25,7 +28,10 @@ export function SnippetsProvider({ children }) {
       .catch(console.error);
   }, []);
 
-  const openModal = useCallback(() => setModalOpen(true), []);
+  const openModal = useCallback((snippet = null) => {
+    setModalSnippet(snippet);
+    setModalOpen(true);
+  }, []);
   const closeModal = useCallback(() => setModalOpen(false), []);
 
   // Resolves with the created snippet; throws if the server rejects it.
@@ -41,7 +47,19 @@ export function SnippetsProvider({ children }) {
     return created;
   }, []);
 
-  // Resolves with the created snippet; throws if the server rejects it.
+  // Resolves with the updated snippet; throws if the server rejects it.
+  const editSnippet = useCallback(async (id, data) => {
+    const res = await fetch(`/api/snippets/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(`Request failed (${res.status})`);
+    const updated = await res.json();
+    setSnippets((prev) => prev.map((item) => (item.id === id ? updated : item)));
+    return updated;
+  }, []);
+
   const deleteSnippet = useCallback(async (id) => {
     try {
       const res = await fetch(`/api/snippets/${id}`, { method: "DELETE" });
@@ -60,8 +78,8 @@ export function SnippetsProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ snippets, modalOpen, openModal, closeModal, addSnippet, deleteSnippet }),
-    [snippets, modalOpen, openModal, closeModal, addSnippet, deleteSnippet]
+    () => ({ snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet }),
+    [snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet]
   );
 
   return <SnippetsContext.Provider value={value}>{children}</SnippetsContext.Provider>;

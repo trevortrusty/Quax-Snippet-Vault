@@ -3,7 +3,7 @@ import RubberDuck from "./RubberDuck" // A vibe-coded duck, he's pretty cool
 import fonts from "./Fonts.module.css"
 import Chat from "./Chat"
 import Navbar from "./Navbar"
-import AddSnippetModal from "./AddSnippetModal"
+import UpdateCardModal from "./UpdateCardModal"
 import { SnippetsProvider } from "./SnippetsContext";
 
 // The screen frame: sidebar on the left, navbar + page content on the right.
@@ -26,7 +26,7 @@ export default function App({ children }) {
           <Navbar />
           <main className={styles.main}>{children}</main>
         </div>
-        <AddSnippetModal />
+        <UpdateCardModal />
       </div>
     </SnippetsProvider>
   );

@@ -8,3 +8,4 @@
 - [ ] Add a language filter drop-down that filters the snippets by language
 - [ ] Add a favorites section and a star button to cards
 - [x] Add click-to-copy to snippet cards
+- [x] Add an edit button to snippet cards

@@ -49,6 +49,6 @@
   font-size: 12px;
 }
 
-.DeleteButton :hover {
+.ModButton :hover {
     cursor: crosshair;
 }
