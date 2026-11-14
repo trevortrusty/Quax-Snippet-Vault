@@ -14,7 +14,7 @@ Launch Quax, unload your troubles onto your rubber duck, and profit. When you ne
 
 ## Project Status
 
-🚧 **Early development.** Snippets can be added, listed and deleted. Click-to-copy and the AI chat are the main missing pieces.
+🚧 **Early development.** Snippets can be added, listed and deleted. AI chat is the main missing piece for an MVP.
 
 ### Done
 
