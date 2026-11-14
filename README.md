@@ -27,7 +27,7 @@ Launch Quax, unload your troubles onto your rubber duck, and profit. When you ne
 
 ### In Progress / Planned
 
-- [ ] Click-to-copy on snippet cards
+- [x] Click-to-copy on snippet cards
 - [ ] Integrate an LLM into the chat bar *(the chat panel currently only echoes submitted messages)*
 - [ ] System prompt so the LLM returns focused snippets, not whole files, unless asked
 - [ ] "Turn into a full file" button on snippet cards
