@@ -8,9 +8,16 @@
 //     openModal(snippet?)     show the modal (pass a snippet to edit it) / closeModal hides it
 //     addSnippet(data)        POST a new snippet, then add it to `snippets` (no reload needed)
 //     editSnippet(id, data)   PATCH a snippet, then swap the updated one into `snippets`
+//     refreshSnippets()       re-fetch the list from the server
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const SnippetsContext = createContext(null);
+
+async function fetchSnippets() {
+  const res = await fetch("/api/snippets");
+  if (!res.ok) throw new Error(`Request failed (${res.status})`); // fetch doesn't throw on 4xx/5xx
+  return res.json();
+}
 
 export function SnippetsProvider({ children }) {
   const [snippets, setSnippets] = useState([]);
@@ -19,13 +26,17 @@ export function SnippetsProvider({ children }) {
 
   // Load the list once on mount.
   useEffect(() => {
-    fetch("/api/snippets")
-      .then((res) => {
-        if (!res.ok) throw new Error(`Request failed (${res.status})`); // fetch doesn't throw on 4xx/5xx
-        return res.json();
-      })
-      .then(setSnippets)
-      .catch(console.error);
+    fetchSnippets().then(setSnippets).catch(console.error);
+  }, []);
+
+  // Re-fetch the whole list. For anything that changes snippets behind the context's back
+  // (e.g. the chat, when Quax saves one).
+  const refreshSnippets = useCallback(async () => {
+    try {
+      setSnippets(await fetchSnippets());
+    } catch (err) {
+      console.error(err);
+    }
   }, []);
 
   const openModal = useCallback((snippet = null) => {
@@ -78,8 +89,8 @@ export function SnippetsProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet }),
-    [snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet]
+    () => ({ snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet, refreshSnippets }),
+    [snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet, refreshSnippets]
   );
 
   return <SnippetsContext.Provider value={value}>{children}</SnippetsContext.Provider>;

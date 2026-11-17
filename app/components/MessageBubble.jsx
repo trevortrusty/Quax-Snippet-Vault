@@ -6,13 +6,13 @@ export default function MessageBubble({type, contents}) {
   return (
     <>
       {
-        type == "sender" ?
-          <div className={`${styles.Sender} ${styles.Bubble} ${fonts.dmSans300} `}>
-            <p>{contents}</p>
+        type == "user" ?
+          <div className={`${styles.User} ${styles.Bubble} ${fonts.dmSans300} `}>
+            <div>{contents}</div>
           </div>
           :
-          <div className={`${styles.Receiver} ${styles.Bubble} ${fonts.dmSans300}`}>
-            <p>{contents}</p>
+          <div className={`${styles.Assistant} ${styles.Bubble} ${fonts.dmSans300}`}>
+            <div>{contents}</div>
           </div>
       }
 

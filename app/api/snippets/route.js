@@ -1,6 +1,7 @@
 import { getDb, rowToSnippet } from "@/app/lib/db";
 import { randomUUID } from "node:crypto";
 
+
 function loadSnippets(db) {
   return db.prepare("SELECT * FROM snippets").all().map(rowToSnippet);
 }

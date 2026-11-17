@@ -20,6 +20,10 @@
 
 .ChatSection {
     margin-top: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .right {
