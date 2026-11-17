@@ -14,33 +14,40 @@ Launch Quax, unload your troubles onto your rubber duck, and profit. When you ne
 
 ## Project Status
 
-🚧 **Early development.** Snippets can be added, listed and deleted. AI chat is the main missing piece for an MVP.
+✅ **MVP reached.** You can chat with Quax to create and update snippets, and manage them from the card grid.
 
 ### Done
 
 - [x] Snippet grid of cards, each with a single-language tag
-- [x] "Add Snippet" modal with multi-line code input
-- [x] Delete button on snippet cards
+- [x] "Add Snippet" modal with multi-line code input, reused as an edit modal for existing cards
+- [x] Edit and delete buttons on snippet cards
+- [x] Click-to-copy on snippet cards
 - [x] REST API for snippets (`GET`/`POST` `/api/snippets`, `GET`/`PATCH`/`DELETE` `/api/snippets/:id`)
 - [x] SQLite persistence with seed and reset scripts
 - [x] Postman collection covering the Snippets API
+- [x] Chat bar wired to a local Claude Code instance (via the Claude Agent SDK) that can list, create and update snippets
+- [x] System prompt so the LLM returns focused snippets, not whole files, unless asked ([`prompts/quax-system-prompt.md`](prompts/quax-system-prompt.md))
 
-### In Progress / Planned
+### Planned
 
-- [x] Click-to-copy on snippet cards
-- [ ] Integrate an LLM into the chat bar *(the chat panel currently only echoes submitted messages)*
-- [ ] System prompt so the LLM returns focused snippets, not whole files, unless asked
 - [ ] "Turn into a full file" button on snippet cards
 - [ ] Language filter drop-down
 - [ ] Favorites section and star button on cards
 
 The full list is tracked in [TODO.md](TODO.md).
 
+## How the Chat Works
+
+The chat bar posts the conversation to `/api/chat`, which runs a Claude Agent SDK session using the system prompt in `prompts/quax-system-prompt.md`. Quax has no file, shell or web access. Its only abilities are four snippet tools (`list_snippets`, `get_snippet`, `create_snippet`, `update_snippet`) that call the snippets API. There is deliberately no delete tool; use the trash button on a card. Code goes straight into the saved card rather than into the chat reply, and the grid refreshes after a change.
+
+The prompt file is read on every request, so edits take effect without a restart. Because the SDK drives your local Claude Code install, you need Claude Code set up and signed in on the machine running Quax.
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org) 16 (App Router) and React 19
 - Tailwind CSS 4 and CSS Modules
 - SQLite for storage (`data/quax.db`)
+- [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) for the chat assistant
 - [lucide-react](https://lucide.dev) icons
 
 ## Getting Started
@@ -72,8 +79,9 @@ Set `QUAX_DB_PATH` to use a different database file.
 | `GET` | `/api/snippets` | List all snippets |
 | `POST` | `/api/snippets` | Create a snippet (`title`, `language` and `code` are required) |
 | `GET` | `/api/snippets/:id` | Get one snippet |
-| `PATCH` | `/api/snippets/:id` | Rename a snippet |
+| `PATCH` | `/api/snippets/:id` | Update a snippet's `title`, `language` and/or `code` (blank values are ignored) |
 | `DELETE` | `/api/snippets/:id` | Delete a snippet |
+| `POST` | `/api/chat` | Send chat `messages`; returns `{ reply, snippetsChanged }` |
 
 A Postman collection with tests for these endpoints lives in [`postman/collections/Quax Snippets API`](postman/collections/Quax%20Snippets%20API).
 
@@ -82,9 +90,12 @@ A Postman collection with tests for these endpoints lives in [`postman/collectio
 ```
 app/
   api/snippets/   REST routes
+  api/chat/       Claude chat route
   components/     UI (cards, chat, modal, navbar)
-  lib/            database helpers
+  lib/            database helpers, Claude snippet tools
 data/             SQLite database
+docs/             REFERENCE.md code reference
+prompts/          chat system prompt
 scripts/          database maintenance
 postman/          API collection and tests
 ```
