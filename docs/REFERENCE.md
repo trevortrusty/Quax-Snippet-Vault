@@ -28,7 +28,7 @@ app/layout.jsx            root <html>/<body>, renders <App>
 ```
 
 - `App` wraps everything in `<SnippetsProvider>`, so any component can call `useSnippets()`.
-- `app/page.jsx` is the only page. It reads `snippets` from the context and renders one `Card` per snippet.
+- `app/page.jsx` is the only page. It reads `snippets` and `languageFilter` from the context and renders one `Card` per snippet whose language matches the filter (all of them when the filter is `"all"`).
 - Snippet state lives in the browser (the context). The server is the source of truth: each mutation calls the API first, then updates local state with the server's response.
 - Styling uses CSS Modules (`*.module.css`). Shared font and colour helper classes live in `Fonts.module.css`: `dmSans300`, `dmSans800`, `textSize14`, `textSize18`, `whiteText`, `grayText`.
 
@@ -71,6 +71,8 @@ Returns the context value. Throws if called outside `<SnippetsProvider>`.
 | `closeModal()` | `() => void` | Hides the modal. |
 | `addSnippet(data)` | `async ({title, language, code}) => Snippet` | `POST /api/snippets`, appends the created snippet to `snippets`. Throws if the response is not OK. |
 | `editSnippet(id, data)` | `async (string, Partial<{title, language, code}>) => Snippet` | `PATCH /api/snippets/:id`, replaces the matching snippet in `snippets`. Throws if the response is not OK. |
+| `languageFilter` | `string` | The language the grid is filtered to, or `"all"` (the default). |
+| `filterLanguage(lang)` | `(string) => void` | Sets `languageFilter`. |
 | `deleteSnippet(id)` | `async (string) => void` | `DELETE /api/snippets/:id`, then removes the snippet from `snippets`. Errors are caught and logged (it does not throw). |
 
 Calling `openModal` from an event handler: wrap it (`onClick={() => openModal()}`). Passing it directly as `onClick={openModal}` would hand the click event in as the snippet.
@@ -91,7 +93,7 @@ Screen frame: sidebar (title, `RubberDuck`, `Chat`) on the left; `Navbar` and th
 
 ### `Navbar` (client)
 
-Top bar titled "Snippet Vault" with a **+** button that calls `openModal()` to start creating a snippet. No props.
+Top bar titled "Snippet Vault" with a language filter `<select>` (calls `filterLanguage()`) and a **+** button that calls `openModal()` to start creating a snippet. No props. The filter's options (All, JSX, cpp, TSX, CSS) are hard-coded, not built from the saved snippets.
 
 ### `Card`
 
@@ -139,11 +141,11 @@ Just the code textarea, controlled by its parent.
 
 ### `Chat` (client)
 
-Sidebar chat: a history of `MessageBubble`s and a `SendInput` box. Sends the conversation to `/api/chat`, which talks to the local Claude Code installation, and shows both sides as bubbles (roles `"user"` and `"assistant"`). Refreshes the snippet grid when Claude saved or edited a snippet. No props.
+Sidebar chat: a history of `MessageBubble`s and a `SendInput` box. Sends the conversation to `/api/chat`, which talks to the local Claude Code installation, and shows both sides as bubbles (roles `"user"` and `"assistant"`). Refreshes the snippet grid when Claude saved or edited a snippet. Message text is parsed with `commonmark` and rendered as JSX (headings, paragraphs, bold, italic, inline code, fenced code blocks, ordered and bullet lists, links, line breaks); styles are in `Markdown.module.css`. No props.
 
 ### `SendInput` (client)
 
-Single-line text input with a Send button. Trims the text, ignores blank input, clears itself after sending.
+Textarea with a Send button. Enter sends and Shift+Enter inserts a newline. While the text has an unclosed fenced code block (an odd number of ` ``` `), Enter inserts a newline instead of sending. Trims the text, ignores blank input, clears itself after sending.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
@@ -250,7 +252,7 @@ npm run db:reset -- --yes    # delete ALL snippets, then re-seed
 
 ## Known limitations
 
-- `Chat` shows no typing indicator or spinner while waiting for Claude, and renders replies as plain text (no markdown). If the request fails, the error is only logged to the console.
+- `Chat` shows no typing indicator or spinner while waiting for Claude. If the request fails, the error is only logged to the console.
 - `Card` does not pass `language` to `CodeBlock`, so the code is always tagged `language-text`.
 - Tags are stored but are neither displayed nor editable.
 - `POST /api/snippets` accepts an empty `code` or `language` string, while the modal does not allow it.

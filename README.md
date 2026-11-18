@@ -26,12 +26,15 @@ Launch Quax, unload your troubles onto your rubber duck, and profit. When you ne
 - [x] SQLite persistence with seed and reset scripts
 - [x] Postman collection covering the Snippets API
 - [x] Chat bar wired to a local Claude Code instance (via the Claude Agent SDK) that can list, create and update snippets
+- [x] Language filter drop-down in the navbar
+- [x] Markdown rendering in chat messages (headings, bold/italic, inline code, fenced code blocks, lists, links), and Enter inserts a newline while a fenced code block is still open
 - [x] System prompt so Claude returns focused snippets, not whole files, unless asked ([`prompts/quax-system-prompt.md`](prompts/quax-system-prompt.md))
 
 ### Planned
 
 - [ ] "Turn into a full file" button on snippet cards
-- [ ] Language filter drop-down
+- [ ] Typing indicator while waiting for Claude
+- [ ] Placeholder card with a spinner while Claude is working
 - [ ] Favorites section and star button on cards
 
 The full list is tracked in [TODO.md](TODO.md).
@@ -47,6 +50,7 @@ The prompt file is read on every request, so edits take effect without a restart
 - [Next.js](https://nextjs.org) 16 (App Router) and React 19
 - Tailwind CSS 4 and CSS Modules
 - SQLite for storage (`data/quax.db`)
+- [commonmark](https://github.com/commonmark/commonmark.js) for parsing markdown in chat messages
 - [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) for the chat assistant, which runs on your local Claude Code installation
 - [lucide-react](https://lucide.dev) icons
 
@@ -94,7 +98,7 @@ app/
   components/     UI (cards, chat, modal, navbar)
   lib/            database helpers, Claude snippet tools
 data/             SQLite database
-docs/             REFERENCE.md code reference
+docs/             REFERENCE.md code reference, RENDER_TREE.md component tree
 prompts/          chat system prompt
 scripts/          database maintenance
 postman/          API collection and tests

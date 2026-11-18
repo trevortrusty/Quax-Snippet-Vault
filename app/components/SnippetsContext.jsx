@@ -23,6 +23,7 @@ export function SnippetsProvider({ children }) {
   const [snippets, setSnippets] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSnippet, setModalSnippet] = useState(null);
+  const [languageFilter, setLanguageFilter] = useState("all");
 
   // Load the list once on mount.
   useEffect(() => {
@@ -88,9 +89,14 @@ export function SnippetsProvider({ children }) {
     }
   }, []);
 
+  const filterLanguage = useCallback((lang) => {
+    setLanguageFilter(lang);
+  }, []);
+
+
   const value = useMemo(
-    () => ({ snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet, refreshSnippets }),
-    [snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet, refreshSnippets]
+    () => ({ snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet, refreshSnippets, languageFilter, filterLanguage}),
+    [snippets, modalOpen, modalSnippet, openModal, closeModal, addSnippet, editSnippet, deleteSnippet, refreshSnippets, languageFilter, filterLanguage]
   );
 
   return <SnippetsContext.Provider value={value}>{children}</SnippetsContext.Provider>;
