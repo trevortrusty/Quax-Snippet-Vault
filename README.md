@@ -26,7 +26,7 @@ Launch Quax, unload your troubles onto your rubber duck, and profit. When you ne
 - [x] SQLite persistence with seed and reset scripts
 - [x] Postman collection covering the Snippets API
 - [x] Chat bar wired to a local Claude Code instance (via the Claude Agent SDK) that can list, create and update snippets
-- [x] System prompt so the LLM returns focused snippets, not whole files, unless asked ([`prompts/quax-system-prompt.md`](prompts/quax-system-prompt.md))
+- [x] System prompt so Claude returns focused snippets, not whole files, unless asked ([`prompts/quax-system-prompt.md`](prompts/quax-system-prompt.md))
 
 ### Planned
 
@@ -47,7 +47,7 @@ The prompt file is read on every request, so edits take effect without a restart
 - [Next.js](https://nextjs.org) 16 (App Router) and React 19
 - Tailwind CSS 4 and CSS Modules
 - SQLite for storage (`data/quax.db`)
-- [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) for the chat assistant
+- [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) for the chat assistant, which runs on your local Claude Code installation
 - [lucide-react](https://lucide.dev) icons
 
 ## Getting Started

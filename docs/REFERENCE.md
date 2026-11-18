@@ -139,7 +139,7 @@ Just the code textarea, controlled by its parent.
 
 ### `Chat` (client)
 
-Sidebar chat: a history of `MessageBubble`s and a `SendInput` box. At the moment it only records the user's own messages (author `"sender"`); the LLM integration is not built yet (see `TODO.md`). No props.
+Sidebar chat: a history of `MessageBubble`s and a `SendInput` box. Sends the conversation to `/api/chat`, which talks to the local Claude Code installation, and shows both sides as bubbles (roles `"user"` and `"assistant"`). Refreshes the snippet grid when Claude saved or edited a snippet. No props.
 
 ### `SendInput` (client)
 
@@ -250,7 +250,7 @@ npm run db:reset -- --yes    # delete ALL snippets, then re-seed
 
 ## Known limitations
 
-- `Chat` does not call an LLM yet, and it mutates its `messages` array in place instead of creating a new one, so it may not re-render reliably.
+- `Chat` shows no typing indicator or spinner while waiting for Claude, and renders replies as plain text (no markdown). If the request fails, the error is only logged to the console.
 - `Card` does not pass `language` to `CodeBlock`, so the code is always tagged `language-text`.
 - Tags are stored but are neither displayed nor editable.
 - `POST /api/snippets` accepts an empty `code` or `language` string, while the modal does not allow it.

@@ -1,0 +1,24 @@
+.heading1 {
+    font-size: 18pt;
+}
+
+.heading2 {
+    font-size: 14pt;
+}
+
+.codeInline {
+    background-color: rgba(43, 43, 43, 0.62);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.codeBlock {
+    background-color: rgba(43, 43, 43, 0.62);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.pre {
+    white-space: pre-wrap;
+    font-size: 11pt;
+}

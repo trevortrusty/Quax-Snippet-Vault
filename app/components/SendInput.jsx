@@ -14,13 +14,22 @@ export default function SendInput({ onSend, placeholder = "Type here...", disabl
     await onSend?.(value);
   };
 
+  const onKeyDown = async (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+
+      handleSubmit(event);
+    }
+  }
+
   return (
     <form className={`${styles.form} ${fonts.dmSans300}`} onSubmit={handleSubmit}>
-      <input
+      <textarea
         className={styles.input}
         type="text"
         value={text}
         onChange={(event) => setText(event.target.value)}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         aria-label={placeholder}
         disabled={disabled}
