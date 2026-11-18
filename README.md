@@ -4,6 +4,8 @@
 
 Quax keeps a personal library of reusable code snippets. Ask for the code you need, get a snippet card, and build up a collection you can search and reuse across projects.
 
+![Quax UI: a chat sidebar with the rubber duck on the left, and a grid of snippet cards on the right](docs/images/quax-ui.png)
+
 ## Why Quax?
 
 Before the future hit us like a quack-ton of bricks, getting boilerplate meant googling, scrolling through w3schools or HowToGeek, and copying snippets into your project. Quax makes that loop obsolete.
