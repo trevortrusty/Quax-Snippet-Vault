@@ -93,8 +93,44 @@ export default function Chat() {
         case "link":
           // node.destination is the URL, node.title is the title
           // TODO
-          stack[stack.length - 1].push(node.destination); //TODO
+          if (entering) {
+            stack.push([]);
+          } else {
+            const children = stack.pop();
+            stack[stack.length - 1].push(
+              <a key={key++} className={markdown.link} href={node.destination} title={ node.title }>{ children }</a>
+            );
+          }
           break;
+
+        case "list":
+          if (entering) {
+            stack.push([]);
+          } else {
+            const children = stack.pop();
+            const Tag = node.listType === "bullet" ? `ul` : `ol`
+            const Class = node.listType === "bullet" ? markdown.unorderedList : markdown.orderedList;
+
+            stack[stack.length - 1].push(
+              <Tag className={ Class } key={key++}>
+                {children}
+              </Tag>
+            );
+          }
+          break;
+
+          case "item":
+            if (entering) {
+              stack.push([]);
+            } else {
+              const children = stack.pop();
+              stack[stack.length - 1].push(
+                <li className={markdown.listItem} key={key++}>
+                  {children}
+                </li>
+              );
+            }
+            break;
 
         case "softbreak":
           stack[stack.length - 1].push(" ");

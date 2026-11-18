@@ -22,3 +22,26 @@
     white-space: pre-wrap;
     font-size: 11pt;
 }
+
+.link {
+    color: rgba(0, 27, 90, 0.91);
+    text-decoration: underline;
+}
+
+/*.listItem {
+    list-style-type: disc;
+}*/
+
+.orderedList {
+    list-style-type: decimal;
+    padding-left: 15px;
+
+    li::marker {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.unorderedList {
+    list-style-type: disc;
+    padding-left: 15px;
+}
